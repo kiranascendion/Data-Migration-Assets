@@ -1,0 +1,10 @@
+{
+  "project_key": "AP",
+  "issue_type": "Task",
+  "summary": "DMCard",
+  "description": "EFT Services to Payment Debit Wave",
+  "priority": "Medium",
+  "labels": [
+    "DM"
+  ]
+}
