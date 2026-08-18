@@ -2,37 +2,49 @@
 
 | Metric | Score (%) |
 |---|---:|
-| Overall Validation Score | 90 |
+| Overall Validation Score | 95 |
 | Accuracy Score | 100 |
-| Efficiency Score | 90 |
-| Completeness Score | 80 |
+| Efficiency Score | 85 |
+| Completeness Score | 100 |
 | Overall Status | PASS WITH WARNINGS |
 
 # Completeness Assessment
 
 | Severity | Area | Issue | Recommendation |
 |---|---|---|---|
-| Medium | Completeness | Source data, mapped data, and mapping result details were available and contained 2 records each; required validation inputs were sufficient to perform mapping validation. | No action required. |
-| Medium | Completeness | All 2 source records had corresponding mapped records by record id (10003, 10004); no required source records were skipped and no required mapped records were missing. | No action required. |
-| Medium | Completeness | Required mapped business fields validated in mapped output were populated for both records: Migration Date, FI Name, Entity ID, Switch, Old Platform, New Platform, Service, CS Location, Total Card Count, and Using OneCall IVR. | No action required. |
-| Low | Completeness | Field `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` was present in mapped data for both records, but mapping result details indicate it was unmatched during template update. This does not affect mapping validation completeness because workbook/template population is out of scope, but it is a downstream handoff warning. | Align downstream template column naming with mapped field naming if this field is intended to populate a workbook column. |
+| Info | Completeness | Required validation inputs were available: source data, mapped data, and mapped records for 2 source records. | No action required. |
+| Info | Completeness | Source record count = 2 and mapped record count = 2; all source records have corresponding mapped records by id/client_id (10003, 10004). | No action required. |
+| Info | Completeness | All required mapped business fields present in the mapped output for both records: Migration Date, FI Name, Entity ID, Switch, Old Platform, New Platform, Service, CS Location, Total Card Count, Using OneCall IVR. | No action required. |
+| Info | Completeness | The field `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` appears in the mapped output and was populated for both records. | No action required. |
+| Info | Completeness | No missing required records, no empty required mapped values, and no zero-record failure condition detected. | No action required. |
 
 # Accuracy Assessment
 
 | Severity | Area | Issue | Recommendation |
 |---|---|---|---|
-| Low | Accuracy | Source-to-target record counts matched exactly: 2 source records and 2 mapped records. | No action required. |
-| Low | Accuracy | Record 10003 values were accurate: Migration Date `2026-03-05`, FI Name `Pacific Financial Services`, Entity ID `503`, Total Card Count `15600`, and Using OneCall IVR `SMS, Mobile App` matched source values. | No action required. |
-| Low | Accuracy | Record 10004 values were accurate: Migration Date `2026-04-20`, FI Name `Metro Bank`, Entity ID `504`, Total Card Count `6400`, and Using OneCall IVR `IVR, SMS, Mobile App` matched source values. | No action required. |
-| Low | Accuracy | Assigned/default values were internally consistent across both records: Switch `BIS`, Old Platform `EFT Services`, New Platform `Payments Debit`, Service `Basic`, and CS Location `Offshore`. No evidence of unsupported or inconsistent assigned values was found in the mapped output. | If formal mapping rules exist for assigned values, retain them with the run artifact so this validation can be fully rule-traceable. |
-| Low | Accuracy | No duplicate mapped records were found, and no unexpected business values were introduced for directly mapped fields. | No action required. |
-| Medium | Accuracy | Explicit mapping rules were not separately provided in the validation inputs. Accuracy for directly mapped fields was validated against source data, and static assigned values were validated for internal consistency only, not against an external rule specification. | Provide the formal mapping rules/configuration with future runs to enable strict rule-by-rule validation of transformations, defaults, and assigned values. |
+| Info | Accuracy | Record 10003: Migration Date correctly mapped from source `migration_date` = `2026-03-05` to target `Migration Date` = `2026-03-05`. | No action required. |
+| Info | Accuracy | Record 10003: FI Name correctly mapped from source `financial_institution_name` = `Pacific Financial Services`. | No action required. |
+| Info | Accuracy | Record 10003: Entity ID correctly mapped from source `entity_id` = `503`. | No action required. |
+| Info | Accuracy | Record 10003: Total Card Count correctly mapped from source `cardcount` = `15600`. | No action required. |
+| Info | Accuracy | Record 10003: Using OneCall IVR correctly mapped from source `vru_activation_options` = `SMS, Mobile App`. | No action required. |
+| Info | Accuracy | Record 10003: Assigned values are internally consistent in mapped output: Switch=`BIS`, Old Platform=`EFT Services`, New Platform=`Payments Debit`, Service=`Basic`, CS Location=`Offshore`. No contradiction was found in supplied inputs. | If formal mapping rules are available, retain them with the validation package to explicitly evidence assigned/default value logic. |
+| Info | Accuracy | Record 10003: `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` correctly carries the source migration date value `2026-03-05`. | No action required. |
+| Info | Accuracy | Record 10004: Migration Date correctly mapped from source `migration_date` = `2026-04-20` to target `Migration Date` = `2026-04-20`. | No action required. |
+| Info | Accuracy | Record 10004: FI Name correctly mapped from source `financial_institution_name` = `Metro Bank`. | No action required. |
+| Info | Accuracy | Record 10004: Entity ID correctly mapped from source `entity_id` = `504`. | No action required. |
+| Info | Accuracy | Record 10004: Total Card Count correctly mapped from source `cardcount` = `6400`. | No action required. |
+| Info | Accuracy | Record 10004: Using OneCall IVR correctly mapped from source `vru_activation_options` = `IVR, SMS, Mobile App`. | No action required. |
+| Info | Accuracy | Record 10004: Assigned values are internally consistent in mapped output: Switch=`BIS`, Old Platform=`EFT Services`, New Platform=`Payments Debit`, Service=`Basic`, CS Location=`Offshore`. No contradiction was found in supplied inputs. | If formal mapping rules are available, retain them with the validation package to explicitly evidence assigned/default value logic. |
+| Info | Accuracy | Record 10004: `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` correctly carries the source migration date value `2026-04-20`. | No action required. |
+| Warning | Accuracy | Explicit mapping rules were not supplied in the provided context. Direct source-to-target mappings were validated against source data, but assigned/default values and any potential transformation logic could only be validated for internal consistency, not against formal rule definitions. | Provide the mapping rules artifact used by the DI DM Mapper Agent in future runs to enable rule-by-rule validation of defaults, transformations, and conditional logic. |
+| Info | Accuracy | No source-to-target mismatches, unsupported business values, incorrect transformations, or unexpected substituted values were detected in the supplied mapped output. | No action required. |
 
 # Efficiency Assessment
 
 | Severity | Area | Issue | Recommendation |
 |---|---|---|---|
-| Low | Efficiency | No duplicate mapped records were detected; mapping processed all records once. | No action required. |
-| Low | Efficiency | Mapped output used a concise set of business fields without redundant repeated field groups. | No action required. |
-| Medium | Efficiency | The mapped output includes `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` in addition to `Migration Date`, and downstream processing reported the former as unmatched. This indicates a potentially unnecessary mapping operation for downstream template population. | Remove or rename the unmatched field in the mapping layer unless it is required by a documented downstream consumer. |
-| Medium | Efficiency | Lack of explicit mapping rules reduces validation efficiency and traceability because assigned/default values cannot be conclusively validated against rule metadata. | Supply structured mapping rules for each run to improve automated validation coverage and governance traceability. |
+| Info | Efficiency | No duplicate mapped records were detected; mapped record ids are unique (10003, 10004). | No action required. |
+| Warning | Efficiency | The updater details reported `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` as unmatched for both records, while the mapped output still contains populated values for that field. This indicates an inconsistency between mapping output and downstream updater processing metadata. | Review the mapping-to-updater field name alignment so processing metadata and mapped payload behavior are consistent. |
+| Warning | Efficiency | The mapped output contains both `DMcarding Spreadsheet - Migration Wave MM/DD/YYYY` and `Migration Date`, each populated with the same value per record. If both are not required by mapping configuration, this may represent redundant mapping effort. | Confirm whether both fields are required. If not, remove the redundant target field from the mapping workflow. |
+| Info | Efficiency | Record-level mapping behavior is consistent across both records for assigned fields and direct mappings. | No action required. |
+| Info | Efficiency | No evidence of unnecessary duplicate records or inconsistent record processing was found in the supplied mapped output. | No action required. |
